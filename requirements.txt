@@ -5,3 +5,5 @@ python-dotenv==1.0.1
 resources==0.0.1
 selene==2.0.0rc9
 selenium==4.27.1
+python-dotenv
+utils~=1.0.2
