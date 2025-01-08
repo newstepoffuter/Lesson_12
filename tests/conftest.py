@@ -23,7 +23,8 @@ def load_env():
 @pytest.fixture(scope="function")
 def browser_settings(request):
     browser_name = request.config.getoption('browser_name') or DEFAULT_BROWSER_NAME
-    browser_version = request.config.getoption('browser_version') or DEFAULT_BROWSER_VERSION
+    browser_version = request.config.getoption('--browser_version')
+    browser_version = browser_version if browser_version != '' else DEFAULT_BROWSER_VERSION
     options = Options()
     selenoid_capabilities = {
         "browserName": browser_name,
@@ -36,8 +37,9 @@ def browser_settings(request):
     options.capabilities.update(selenoid_capabilities)
     login = os.getenv('LOGIN')
     password = os.getenv('PASSWORD')
+    selenoid_host = os.getenv('SELENOID_HOST')
     driver = webdriver.Remote(
-        command_executor=f"https://{login}:{password}@selenoid.autotests.cloud/wd/hub",
+        command_executor=f"https://{login}:{password}@{selenoid_host}.cloud/wd/hub",
         options=options)
 
     browser.config.driver = driver
@@ -52,8 +54,6 @@ def browser_settings(request):
     attach.add_video(browser)
     browser.quit()
 
-
-
 # @pytest.fixture(scope='session', autouse=True)
 # def browser_settings():
 #     driver_options = webdriver.ChromeOptions()
@@ -64,4 +64,3 @@ def browser_settings(request):
 #
 #     yield
 #     browser.quit()
-
