@@ -21,7 +21,7 @@ def load_env():
 
 
 @pytest.fixture(scope="function")
-def setup_browser(request):
+def browser_settings(request):
     browser_name = request.config.getoption('browser_name') or DEFAULT_BROWSER_NAME
     browser_version = request.config.getoption('browser_version') or DEFAULT_BROWSER_VERSION
     options = Options()
