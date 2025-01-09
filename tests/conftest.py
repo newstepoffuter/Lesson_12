@@ -21,10 +21,9 @@ def load_env():
 
 
 @pytest.fixture(scope="function")
-def browser_settings(request):
+def setup_browser(request):
     browser_name = request.config.getoption('browser_name') or DEFAULT_BROWSER_NAME
-    browser_version = request.config.getoption('--browser_version')
-    browser_version = browser_version if browser_version != '' else DEFAULT_BROWSER_VERSION
+    browser_version = request.config.getoption('browser_version') or DEFAULT_BROWSER_VERSION
     options = Options()
     selenoid_capabilities = {
         "browserName": browser_name,
@@ -52,14 +51,3 @@ def browser_settings(request):
     attach.add_html(browser)
     attach.add_video(browser)
     browser.quit()
-
-# @pytest.fixture(scope='session', autouse=True)
-# def browser_settings():
-#     driver_options = webdriver.ChromeOptions()
-#     driver_options.page_load_strategy = 'eager'
-#     browser.config.driver.maximize_window()
-#     browser.config.driver_options = driver_options
-#     browser.config.base_url = 'https://demoqa.com'
-#
-#     yield
-#     browser.quit()
